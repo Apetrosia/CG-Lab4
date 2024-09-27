@@ -22,6 +22,7 @@ namespace CG_Lab
             polygons = new List<Polygon>();
             polygons.Add(new Polygon());
             CurrColorPB.BackColor = currColor;
+            transformBox.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
         private void ClearButton_Click(object sender, EventArgs e)

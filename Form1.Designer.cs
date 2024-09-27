@@ -32,6 +32,9 @@
             this.ClearButton = new System.Windows.Forms.Button();
             this.CurrColorPB = new System.Windows.Forms.PictureBox();
             this.NewPolygon = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.transformBox = new System.Windows.Forms.ComboBox();
+            this.transformButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrColorPB)).BeginInit();
             this.SuspendLayout();
@@ -74,12 +77,48 @@
             this.NewPolygon.UseVisualStyleBackColor = true;
             this.NewPolygon.Click += new System.EventHandler(this.NewPolygon_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(312, -1);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(211, 20);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Афинные преобраозвания";
+            // 
+            // transformBox
+            // 
+            this.transformBox.FormattingEnabled = true;
+            this.transformBox.Items.AddRange(new object[] {
+            "Смещение на dx, dy",
+            "Поворот вокруг заданной пользователем точки",
+            "Поворот вокруг своего центра",
+            "Масштабирование относительно заданной точки",
+            "Масштабирование относительно своего центра"});
+            this.transformBox.Location = new System.Drawing.Point(312, 22);
+            this.transformBox.Name = "transformBox";
+            this.transformBox.Size = new System.Drawing.Size(411, 28);
+            this.transformBox.TabIndex = 6;
+            this.transformBox.Text = "Смещение на dx, dy";
+            // 
+            // transformButton
+            // 
+            this.transformButton.Location = new System.Drawing.Point(729, 12);
+            this.transformButton.Name = "transformButton";
+            this.transformButton.Size = new System.Drawing.Size(110, 43);
+            this.transformButton.TabIndex = 7;
+            this.transformButton.Text = "Применить";
+            this.transformButton.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(1151, 542);
+            this.Controls.Add(this.transformButton);
+            this.Controls.Add(this.transformBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.NewPolygon);
             this.Controls.Add(this.CurrColorPB);
             this.Controls.Add(this.ClearButton);
@@ -90,6 +129,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrColorPB)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -99,6 +139,9 @@
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.PictureBox CurrColorPB;
         private System.Windows.Forms.Button NewPolygon;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox transformBox;
+        private System.Windows.Forms.Button transformButton;
     }
 }
 
