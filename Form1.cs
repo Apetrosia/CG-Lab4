@@ -20,6 +20,7 @@ namespace CG_Lab
         List<Point> clickedPoints = new List<Point>();
         bool pointExists = false;
         Bitmap curr_bitmap = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -413,19 +414,19 @@ namespace CG_Lab
             switch (transformBox.SelectedIndex)
             {
                 case (int)Action.Move:
-
+                    Transfer();
                     break;
                 case (int)Action.Rotation1:
-
+                    RotateCenter(true);
                     break;
                 case (int)Action.Rotation2:
                     RotateCenter();
                     break;
                 case (int)Action.Scaling1:
-                    Scaling(false);
+                    Scaling(true);
                     break;
                 case (int)Action.Scaling2:
-                    Scaling(true);
+                    Scaling();
                     break;
                 default:
                     MessageBox.Show("Не реализованная операция!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -472,16 +473,49 @@ namespace CG_Lab
             return point * translationMatrix;
         }
 
-        private void RotateCenter()
+        private void Transfer()
+        {
+            double dx = (double)numericUpDown4.Value;
+            double dy = (double)numericUpDown5.Value;
+
+            polygons.ForEach(poly =>
+            {
+                MyGraphics.ClearPolygon(pictureBox, poly.points);
+
+                for (int i = 0; i < poly.points.Count; i++)
+                {
+                    Matrix pointMatrix = poly.points[i];
+
+                    Matrix newPointMatrix =
+                    ApplyMove(
+                        poly.points[i],
+                        -dx,
+                        dy
+                    );
+
+                    poly.points[i] = newPointMatrix;
+
+                }
+
+                MyGraphics.DrawPolygon(pictureBox, currColor, poly.points);
+            }
+
+            );
+
+            pictureBox.Refresh();
+            curr_bitmap = new Bitmap(pictureBox.Image);
+        }
+
+        private void RotateCenter(bool useCenter = false)
         {
             var angle = numericUpDown1.Value;
 
             double angleRadians = (double)angle * (Math.PI / 180);
 
             polygons.ForEach(poly =>
-
             {
-                Point center = poly.GetCenter();
+                Point center = (Point)(useCenter ? clickedPoint : poly.GetCenter());
+
                 MyGraphics.ClearPolygon(pictureBox, poly.points);
 
                 for (int i = 0; i < poly.points.Count; i++)
@@ -516,15 +550,14 @@ namespace CG_Lab
             curr_bitmap = new Bitmap(pictureBox.Image);
         }
 
-        private void Scaling(bool useCenter)
+        private void Scaling(bool useCenter = false)
         {
             double a = (double)numericUpDown2.Value;
             double b = (double)numericUpDown3.Value;
 
             polygons.ForEach(poly =>
-
             {
-                Point point = useCenter ? poly.GetCenter() : new Point(0, 0); // заглушка
+                Point point = (Point)(useCenter ? clickedPoint : poly.GetCenter());
 
                 MyGraphics.ClearPolygon(pictureBox, poly.points);
 
