@@ -74,10 +74,10 @@ namespace CG_Lab
                     RotateCenter();
                     break;
                 case (int)Action.Scaling1:
-                    ScalingUserDot();
+                    Scaling(false);
                     break;
                 case (int)Action.Scaling2:
-
+                    Scaling(true);
                     break;
                 default:
                     MessageBox.Show("Не реализованная операция!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -107,7 +107,19 @@ namespace CG_Lab
                     { cos, sin, 0 },
                     { -sin, cos, 0 },
                     { 0, 0, 1 }
-                };
+            };
+
+            return point * translationMatrix;
+        }
+
+        private Matrix ApplyScaling(Matrix point, double a, double b)
+        {
+            Matrix translationMatrix = new double[,]
+            {
+                    { a, 0, 0 },
+                    { 0, b, 0 },
+                    { 0, 0, 1 }
+            };
 
             return point * translationMatrix;
         }
@@ -126,25 +138,21 @@ namespace CG_Lab
 
                 for (int i = 0; i < poly.points.Count; i++)
                 {
-                    
-                        Matrix pointMatrix = poly.points[i];
-                        
-                        Matrix newPointMatrix = 
+
+                    poly.points[i] =
                         ApplyMove(
                             ApplyRotation(
                                 ApplyMove(
-                                    poly.points[i], 
-                                    center.X, 
+                                    poly.points[i],
+                                    center.X,
                                     center.Y
-                                ), 
+                                ),
                                 angleRadians
-                            ), 
-                            -center.X, 
+                            ),
+                            -center.X,
                             -center.Y
                         );
 
-                        poly.points[i] = newPointMatrix;
-                    
                 }
 
                 MyGraphics.DrawPolygon(pictureBox, currColor, poly.points);
@@ -155,7 +163,7 @@ namespace CG_Lab
             pictureBox.Refresh();
         }
 
-        private void ScalingUserDot()
+        private void Scaling(bool useCenter)
         {
             double a = (double)numericUpDown2.Value;
             double b = (double)numericUpDown3.Value;
@@ -163,9 +171,33 @@ namespace CG_Lab
             polygons.ForEach(poly =>
 
             {
+                Point point = useCenter ? poly.GetCenter() : new Point(0, 0); // заглушка
 
+                MyGraphics.ClearPolygon(pictureBox, poly.points);
+
+                for (int i = 0; i < poly.points.Count; i++)
+                {
+                    poly.points[i] =
+                    ApplyMove(
+                        ApplyScaling(
+                            ApplyMove(
+                                poly.points[i],
+                                point.X,
+                                point.Y
+                            ),
+                            a,
+                            b
+                        ),
+                    -point.X,
+                    -point.Y
+                    );
+                }
+
+                MyGraphics.DrawPolygon(pictureBox, currColor, poly.points);
             }
             );
+
+            pictureBox.Refresh();
         }
     }
 
