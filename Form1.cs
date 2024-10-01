@@ -12,8 +12,6 @@ namespace CG_Lab
         Color currColor = Color.Black;
         int currPolygonInd = 0;
 
-        private Action selectedAction;
-
         private enum Action { Move, Rotation1, Rotation2, Scaling1, Scaling2 };
 
         public Form1()
@@ -76,7 +74,7 @@ namespace CG_Lab
                     RotateCenter();
                     break;
                 case (int)Action.Scaling1:
-
+                    ScalingUserDot();
                     break;
                 case (int)Action.Scaling2:
 
@@ -89,12 +87,12 @@ namespace CG_Lab
 
         private Matrix ApplyMove(Matrix point, double dx, double dy)
         {
-            Matrix translationMatrix = new Matrix(new double[,]
+            Matrix translationMatrix = new double[,]
                     {
                     { 1, 0, 0 },
                     { 0, 1, 0 },
                     { -dx, -dy, 1 }
-                    });
+                    };
 
             return point * translationMatrix;
         }
@@ -104,22 +102,21 @@ namespace CG_Lab
             double sin = Math.Sin(angle);
             double cos = Math.Cos(angle);
 
-            Matrix translationMatrix = new Matrix(new double[,]
+            Matrix translationMatrix = new double[,]
             {
                     { cos, sin, 0 },
                     { -sin, cos, 0 },
                     { 0, 0, 1 }
-                }
-                    );
+                };
 
             return point * translationMatrix;
         }
 
         private void RotateCenter()
         {
-            int angle = (int)numericUpDown1.Value;
+            var angle = numericUpDown1.Value;
 
-            double angleRadians = angle * (Math.PI / 180);
+            double angleRadians = (double)angle * (Math.PI / 180);
 
             polygons.ForEach(poly =>
             
@@ -130,10 +127,7 @@ namespace CG_Lab
                 for (int i = 0; i < poly.points.Count; i++)
                 {
                     
-                        Matrix pointMatrix = new double[,]
-                        {
-                        { poly.points[i].X, poly.points[i].Y, 1 }
-                        };
+                        Matrix pointMatrix = poly.points[i];
                         
                         Matrix newPointMatrix = 
                         ApplyMove(
@@ -149,7 +143,7 @@ namespace CG_Lab
                             -center.Y
                         );
 
-                        poly.points[i] = new Point((int)Math.Round(newPointMatrix[0, 0]), (int)Math.Round(newPointMatrix[0, 1]));
+                        poly.points[i] = newPointMatrix;
                     
                 }
 
@@ -161,6 +155,18 @@ namespace CG_Lab
             pictureBox.Refresh();
         }
 
+        private void ScalingUserDot()
+        {
+            double a = (double)numericUpDown2.Value;
+            double b = (double)numericUpDown3.Value;
+
+            polygons.ForEach(poly =>
+
+            {
+
+            }
+            );
+        }
     }
 
     public class Polygon
@@ -195,6 +201,11 @@ namespace CG_Lab
         public static implicit operator Matrix(double[,] values)
         {
             return new Matrix(values);
+        }
+
+        public static implicit operator Point(Matrix m)
+        {
+            return new Point((int)Math.Round(m[0, 0]), (int)Math.Round(m[0, 1]));
         }
 
         public Matrix(Point point)
