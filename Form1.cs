@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CG_Lab
 {
@@ -32,6 +31,9 @@ namespace CG_Lab
             Bitmap PictureBoxClear = new Bitmap(pictureBox.Width, pictureBox.Height);
             using (Graphics g = Graphics.FromImage(PictureBoxClear))
                 g.Clear(Color.White);
+            
+            polygons.Clear();
+
             pictureBox.Image = PictureBoxClear;
         }
 
@@ -299,9 +301,6 @@ namespace CG_Lab
 
         public static void DrawPolygon(PictureBox pictureBox, Color color, List<Point> points)
         {
-            if (points.Count < 2)
-                return;
-
             for (int i = 0; i < points.Count; i++)
             {
                 Point p0 = points[i];

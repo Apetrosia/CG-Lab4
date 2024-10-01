@@ -154,7 +154,7 @@
             this.numericUpDown2.DecimalPlaces = 2;
             this.numericUpDown2.Location = new System.Drawing.Point(753, 244);
             this.numericUpDown2.Maximum = new decimal(new int[] {
-            360,
+            10,
             0,
             0,
             0});
@@ -167,7 +167,7 @@
             this.numericUpDown3.DecimalPlaces = 2;
             this.numericUpDown3.Location = new System.Drawing.Point(847, 244);
             this.numericUpDown3.Maximum = new decimal(new int[] {
-            360,
+            10,
             0,
             0,
             0});
