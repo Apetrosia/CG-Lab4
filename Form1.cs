@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Reflection;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CG_Lab
 {
@@ -89,9 +87,39 @@ namespace CG_Lab
             }
         }
 
+        private Matrix ApplyMove(Matrix point, double dx, double dy)
+        {
+            Matrix translationMatrix = new Matrix(new double[,]
+                    {
+                    { 1, 0, 0 },
+                    { 0, 1, 0 },
+                    { -dx, -dy, 1 }
+                    });
+
+            return point * translationMatrix;
+        }
+
+        private Matrix ApplyRotation(Matrix point, double angle)
+        {
+            double sin = Math.Sin(angle);
+            double cos = Math.Cos(angle);
+
+            Matrix translationMatrix = new Matrix(new double[,]
+            {
+                    { cos, sin, 0 },
+                    { -sin, cos, 0 },
+                    { 0, 0, 1 }
+                }
+                    );
+
+            return point * translationMatrix;
+        }
+
         private void RotateCenter()
         {
             int angle = (int)numericUpDown1.Value;
+
+            double angleRadians = angle * (Math.PI / 180);
 
             polygons.ForEach(poly =>
             
@@ -99,26 +127,29 @@ namespace CG_Lab
                 Point center = poly.GetCenter();
                 MyGraphics.ClearPolygon(pictureBox, poly.points);
 
-                Matrix translationMatrix = new Matrix( new int[,]
-                    {
-                    { 1, 0, -center.X },
-                    { 0, 1, -center.Y },
-                    { 0, 0, 1 }
-                    });
-
                 for (int i = 0; i < poly.points.Count; i++)
                 {
                     
-                        Matrix pointMatrix = new Matrix(new int[,]
+                        Matrix pointMatrix = new double[,]
                         {
-                        { poly.points[i].X },
-                        { poly.points[i].Y },
-                        { 1 }
-                        });
+                        { poly.points[i].X, poly.points[i].Y, 1 }
+                        };
                         
-                        Matrix newPointMatrix = pointMatrix * translationMatrix;
+                        Matrix newPointMatrix = 
+                        ApplyMove(
+                            ApplyRotation(
+                                ApplyMove(
+                                    poly.points[i], 
+                                    center.X, 
+                                    center.Y
+                                ), 
+                                angleRadians
+                            ), 
+                            -center.X, 
+                            -center.Y
+                        );
 
-                        poly.points[i] = new Point(newPointMatrix[0, 0], newPointMatrix[1, 0]);
+                        poly.points[i] = new Point((int)Math.Round(newPointMatrix[0, 0]), (int)Math.Round(newPointMatrix[0, 1]));
                     
                 }
 
@@ -154,11 +185,26 @@ namespace CG_Lab
 
     public class Matrix
     {
-        public int[,] Values { get; }
+        public double[,] Values { get; }
 
-        public Matrix(int[,] values)
+        public Matrix(double[,] values)
         {
             Values = values;
+        }
+
+        public static implicit operator Matrix(double[,] values)
+        {
+            return new Matrix(values);
+        }
+
+        public Matrix(Point point)
+        {
+            Values = new double[1, 3] { { point.X, point.Y, 1 } };
+        }
+
+        public static implicit operator Matrix(Point point)
+        {
+            return new Matrix(point);
         }
 
         public static Matrix operator *(Matrix A, Matrix B)
@@ -168,7 +214,7 @@ namespace CG_Lab
             int rowsB = B.Values.GetLength(0);
             int colsB = B.Values.GetLength(1);
 
-            int[,] result = new int[rowsA, colsB];
+            double[,] result = new double[rowsA, colsB];
 
             for (int i = 0; i < rowsA; i++)
             {
@@ -185,7 +231,7 @@ namespace CG_Lab
             return new Matrix(result);
         }
 
-        public int this[int row, int column]
+        public double this[int row, int column]
         {
             get
             {
@@ -196,6 +242,8 @@ namespace CG_Lab
                 Values[row, column] = value;
             }
         }
+
+        public Matrix Clone() => new Matrix((double[,])Values.Clone());
     }
 
     public static class MyGraphics
