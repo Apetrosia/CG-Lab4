@@ -702,7 +702,8 @@ namespace CG_Lab
 
             Bitmap pb = new Bitmap(pictureBox.Image);
 
-            pb.SetPixel(x1, y1, Color.FromArgb(255, 0, 0, 0));
+            if (x1 >= 0 && x1 < pictureBox.Width && y1 >= 0 && y1 < pictureBox.Height)
+                pb.SetPixel(x1, y1, Color.FromArgb(255, 0, 0, 0));
 
             float deltaX = x1 - x0;
             float deltaY = y1 - y0;
@@ -716,14 +717,20 @@ namespace CG_Lab
                     float y = y0 + gradient;
                     for (int x = x0 + 1; x <= x1; x++)
                     {
-                        int alpha = (int)((1 - (y - (int)y)) * 255);
-                        pb.SetPixel(x, (int)y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
-                        alpha = (int)((y - (int)y) * 255);
-                        pb.SetPixel(x, (int)y + 1, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
+                        if (x >= 0 && x < pictureBox.Width && (int)y >= 0 && (int)y < pictureBox.Height)
+                        {
+                            int alpha = (int)((1 - (y - (int)y)) * 255);
+                            pb.SetPixel(x, (int)y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
+                        if (x >= 0 && x < pictureBox.Width && (int)y + 1 >= 0 && (int)y + 1 < pictureBox.Height)
+                        {
+                            int alpha = (int)((y - (int)y) * 255);
+                            pb.SetPixel(x, (int)y + 1, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
                         y += gradient;
                     }
                 }
@@ -733,14 +740,20 @@ namespace CG_Lab
                     float y = y0 + gradient;
                     for (int x = x0 - 1; x >= x1; x--)
                     {
-                        int alpha = (int)((1 - (y - (int)y)) * 255);
-                        pb.SetPixel(x, (int)y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
-                        alpha = (int)((y - (int)y) * 255);
-                        pb.SetPixel(x, (int)y + 1, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
+                        if (x >= 0 && x < pictureBox.Width && (int)y >= 0 && (int)y < pictureBox.Height)
+                        {
+                            int alpha = (int)((1 - (y - (int)y)) * 255);
+                            pb.SetPixel(x, (int)y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
+                        if (x >= 0 && x < pictureBox.Width && (int)y + 1 >= 0 && (int)y + 1 < pictureBox.Height)
+                        {
+                            int alpha = (int)((y - (int)y) * 255);
+                            pb.SetPixel(x, (int)y + 1, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
                         y += gradient;
                     }
                 }
@@ -753,14 +766,20 @@ namespace CG_Lab
                     float x = x0 + gradient;
                     for (int y = y0 + 1; y <= y1; y++)
                     {
-                        int alpha = (int)((1 - (x - (int)x)) * 255);
-                        pb.SetPixel((int)x, y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
-                        alpha = (int)((x - (int)x) * 255);
-                        pb.SetPixel((int)x + 1, y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
+                        if ((int)x >= 0 && (int)x < pictureBox.Width && y >= 0 && y < pictureBox.Height)
+                        {
+                            int alpha = (int)((1 - (x - (int)x)) * 255);
+                            pb.SetPixel((int)x, y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
+                        if ((int)x + 1 >= 0 && (int)x + 1 < pictureBox.Width && y >= 0 && y < pictureBox.Height)
+                        {
+                            int alpha = (int)((x - (int)x) * 255);
+                            pb.SetPixel((int)x + 1, y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
                         x += gradient;
                     }
                 }
@@ -770,14 +789,20 @@ namespace CG_Lab
                     float x = x0 + gradient;
                     for (int y = y0 - 1; y >= y1; y--)
                     {
-                        int alpha = (int)((1 - (x - (int)x)) * 255);
-                        pb.SetPixel((int)x, y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
-                        alpha = (int)((x - (int)x) * 255);
-                        pb.SetPixel((int)x + 1, y, Color.FromArgb(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.G * alpha / 255 + (255 - alpha) * 255 / 255,
-                            color.B * alpha / 255 + (255 - alpha) * 255 / 255));
+                        if ((int)x >= 0 && (int)x < pictureBox.Width && y >= 0 && y < pictureBox.Height)
+                        {
+                            int alpha = (int)((1 - (x - (int)x)) * 255);
+                            pb.SetPixel((int)x, y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
+                        if ((int)x + 1 >= 0 && (int)x + 1 < pictureBox.Width && y >= 0 && y < pictureBox.Height)
+                        {
+                            int alpha = (int)((x - (int)x) * 255);
+                            pb.SetPixel((int)x + 1, y, Color.FromArgb(255, Math.Max(0, Math.Min(255, color.R * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.G * alpha / 255 + (255 - alpha) * 255 / 255)),
+                                Math.Max(0, Math.Min(255, color.B * alpha / 255 + (255 - alpha) * 255 / 255))));
+                        }
                         x += gradient;
                     }
                 }
