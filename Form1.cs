@@ -33,6 +33,7 @@ namespace CG_Lab
             CurrColorPB.BackColor = currColor;
             transformBox.DropDownStyle = ComboBoxStyle.DropDownList;
         }
+
         private void resetFlags()
         {
             isDeterminingPosition = false;
@@ -41,6 +42,7 @@ namespace CG_Lab
             searchingBox.Text = "Векторные алгоритмы";
             isInPolygon = false;
         }
+
         private void ClearButton_Click(object sender, EventArgs e)
         {
             resetFlags();
@@ -89,8 +91,6 @@ namespace CG_Lab
                 if (len > 1)
                     MyGraphics.DrawLineVu(pictureBox, currColor, polygons[currPolygonInd].points[len - 2], polygons[currPolygonInd].points[len - 1]);
             }
-
-
         }
         private void helpingFunction(Point mousePoint, MouseEventArgs e)
         {
@@ -811,6 +811,4 @@ namespace CG_Lab
 
         }
     }
-
-
 }
