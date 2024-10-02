@@ -414,7 +414,7 @@ namespace CG_Lab
             switch (transformBox.SelectedIndex)
             {
                 case (int)Action.Move:
-                    Transfer();
+                    Move();
                     break;
                 case (int)Action.Rotation1:
                     RotateCenter(true);
@@ -473,7 +473,7 @@ namespace CG_Lab
             return point * translationMatrix;
         }
 
-        private void Transfer()
+        private void Move()
         {
             double dx = (double)numericUpDown4.Value;
             double dy = (double)numericUpDown5.Value;
