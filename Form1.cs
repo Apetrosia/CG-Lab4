@@ -520,9 +520,6 @@ namespace CG_Lab
 
                 for (int i = 0; i < poly.points.Count; i++)
                 {
-
-                    Matrix pointMatrix = poly.points[i];
-
                     Matrix newPointMatrix =
                     ApplyMove(
                         ApplyRotation(
